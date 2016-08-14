@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+        var data = new google.visualization.arrayToDataTable([
+          ['Среднее арифметическое за {{info.range}} и простое скользящая средняя с n = 5', 'Среднее арифметическое', 'Скользящая средняя'],
+          {% for d in data %}
+            ["{{d[0]+1}}", {{d[1]}}, {{d[2]}}],
+          {% endfor %}
+        ]);
+
+        var options = {
+          width: 900,
+          chart: {
+            title: 'График солнечных затмений #{{info.num}}',
+            subtitle: ''
+          },
+          series: {
+            0: { axis: '' }, // Bind series 0 to an axis named 'distance'.
+            1: { axis: '' } // Bind series 1 to an axis named 'brightness'.
+          },
+          axes: {
+            y: {
+              distance: {label: 'parsecs'}, // Left y-axis.
+              brightness: {side: 'right', label: ''} // Right y-axis.
+            }
+          }
+        };
+
+      var chart = new google.charts.Bar(document.getElementById('dual_y_div'));
+      chart.draw(data, options);
+    };
+    </script>
+  </head>
+  <body style="margin-left:20px">
+    <div style="margin:5px"><a href="/g1">График 1</a> <a href="/g2">График 2</a></div>
+    <div id="dual_y_div" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>
